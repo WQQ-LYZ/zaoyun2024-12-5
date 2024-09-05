@@ -128,7 +128,7 @@ format_data.iloc[:, 7:] = format_data.iloc[:, 7:].astype(float)
 with (col_form1):
     # 使用pickle的load方法从磁盘文件反序列化加载一个之前保存的随机森林模型对象
 
-    with open('E:\\活计\\数据代分析\\正式实验\\xgboost_model.pkl', 'rb') as f:
+    with open('xgboost_model.pkl', 'rb') as f:
         rfc_model = pickle.load(f)
     # 使用pickle的load方法从磁盘文件反序列化加载一个之前保存的映射对象
     # with open('output_uniques.pkl', 'rb') as f:
