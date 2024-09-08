@@ -5,11 +5,11 @@ from sklearn import preprocessing
 import numpy as np
 import xgboost as xgb
 from pycaret.classification import *
-st.set_page_config(
-    page_title="HFpEF PhenoRiskAssist——Precision Medicine Starts Here",  # 页面标题
-    page_icon="heart_icon.png",  # 页面图标
-    layout='wide',
-)
+# st.set_page_config(
+#     page_title="HFpEF PhenoRiskAssist——Precision Medicine Starts Here",  # 页面标题
+#     page_icon="heart_icon.png",  # 页面图标
+#     layout='wide',
+# )
 st.markdown("""
     <style>
     .css-18e3th9 {
@@ -21,7 +21,7 @@ st.markdown("""
 
     </style>
     """, unsafe_allow_html=True)
-col_form, col_form1 = st.columns([3, 2])
+col_form, col_form1 = st.columns([1, 1])
 predict_result_code_FULL = 0
 with (col_form):
 
@@ -29,16 +29,16 @@ with (col_form):
     # 运用表单和表单提交按钮
     with st.form('user_inputs'):
 
-        shifoushengyuguonanhai = st.selectbox('是否生育过男孩', options=['Yes', 'No'])
-        shoujiaoyuchengdu = st.selectbox('受教育程度', options=['文盲', '小学','初中','高中或中专','大学及以上'])
-        pougongchanhouyindaofenmianshi= st.selectbox('剖宫产后阴道分娩史', options=['Yes', 'No'])
-        tangniaobingshi = st.selectbox('糖尿病史', options=['Yes', 'No'])
-        bencirenshenqitangniaobing = st.selectbox('本次妊娠期糖尿病', options=['Yes', 'No'])
-        gaoxueya = st.selectbox('高血压', options=['慢高', '妊娠期血压','无'])
-        qiancipaogongchanzhizhengshifoucunzai = st.selectbox('前次剖宫产指证是否存在', options=['Yes', 'No'])
-        yunqianBMI = st.number_input('孕前BMI')
-        yunci = st.number_input('孕次')
-        jiwangyindaofenmiancishu = st.number_input('既往阴道分娩次数')
+        shifoushengyuguonanhai = st.selectbox('History of delivering   a male baby', options=['Yes', 'No'])
+        shoujiaoyuchengdu = st.selectbox('Educational level', options=['Illiterate', 'Primary school','Junior high school','High school or technical secondary school','University or higher'])
+        pougongchanhouyindaofenmianshi= st.selectbox('Previous vaginal delivery after CS', options=['Yes', 'No'])
+        tangniaobingshi = st.selectbox('Diabetes  mellitus', options=['Yes', 'No'])
+        bencirenshenqitangniaobing = st.selectbox('Gestational  diabetes  mellitus', options=['Yes', 'No'])
+        gaoxueya = st.selectbox('History of hypertension', options=['Chronic   hypertension', 'Gestational  hypertension','None'])
+        qiancipaogongchanzhizhengshifoucunzai = st.selectbox('Indication for prior Cesarean', options=['Yes', 'No'])
+        yunqianBMI = st.number_input('BMI before pregnancy')
+        yunci = st.number_input('Gravidity')
+        jiwangyindaofenmiancishu = st.number_input('Previous vaginal  delivery')
         submitted = st.form_submit_button('predict')
         st.markdown("""
                                             <style>
@@ -56,15 +56,15 @@ if shifoushengyuguonanhai == 'Yes':
 elif shifoushengyuguonanhai == 'No':
     shifoushengyuguonanhai = 0
 
-if shoujiaoyuchengdu == '文盲':
+if shoujiaoyuchengdu == 'Illiterate':
     shoujiaoyuchengdu = 1
-elif shoujiaoyuchengdu == '小学':
+elif shoujiaoyuchengdu == 'Primary school':
     shoujiaoyuchengdu = 2
-elif shoujiaoyuchengdu == '初中':
+elif shoujiaoyuchengdu == 'Junior high school':
     shoujiaoyuchengdu = 3
-elif shoujiaoyuchengdu == '高中或中专':
+elif shoujiaoyuchengdu == 'High school or technical secondary school':
     shoujiaoyuchengdu = 4
-elif shoujiaoyuchengdu == '大学及以上':
+elif shoujiaoyuchengdu == 'University or higher':
     shoujiaoyuchengdu = 5
 
 if pougongchanhouyindaofenmianshi == 'Yes':
@@ -82,11 +82,11 @@ if bencirenshenqitangniaobing == 'Yes':
 elif bencirenshenqitangniaobing == 'No':
     bencirenshenqitangniaobing = 0
 
-if gaoxueya == '慢高':
+if gaoxueya == 'Chronic   hypertension':
     gaoxueya = 1
-elif gaoxueya == '妊娠期血压':
+elif gaoxueya == 'Gestational  hypertension':
     gaoxueya = 2
-elif gaoxueya == '无':
+elif gaoxueya == 'None':
     gaoxueya = 3
 
 if qiancipaogongchanzhizhengshifoucunzai == 'Yes':
@@ -109,11 +109,9 @@ numerical_data = min_max_scaler.fit_transform(numerical_data)
 format_data =     category_data + numerical_data.flatten().tolist()
 format_data=np.array(format_data)
 columns = [
-    'shifoushengyuguonanhai', 'shoujiaoyuchengdu', 'yunci',
-    'pougongchanhouyindaofenmianshi', 'tangniaobingshi',
-    'bencirenshenqitangniaobing', 'gaoxueya',
-    'qiancipaogongchanzhizhengshifoucunzai', 'yunqianBMI',
-    'jiwangyindaofenmiancishu'
+    'shifoushengyuguonanhai', 'shoujiaoyuchengdu', 'yunci', 'pougongchanhouyindaofenmianshi',
+                 'tangniaobingshi', 'bencirenshenqitangniaobing', 'gaoxueya', 'qiancipaogongchanzhizhengshifoucunzai',
+                 'yunqianBMI', 'jiwangyindaofenmiancishu'
 ]
 format_data = pd.DataFrame([format_data], columns=columns)
 # format_data = pd.DataFrame(format_data, index=[0])  # 假设我们只有一行数据，所以index设置为[0]
@@ -148,7 +146,7 @@ with (col_form1):
             # 根据预测结果输出对应的企鹅物种名称
             if predict_result_code == 1:
                 predict_result_code_FULL = 1
-                st.write(f'建议分娩方式为：剖宫产')
+                st.write(f'It is recommended to deliver by：Cesarean section')
             elif predict_result_code == 0:
                 predict_result_code_FULL = 0
-                st.write(f'建议分娩方式为：顺产')
+                st.write(f'It is recommended to deliver by：Vaginal delivery')
